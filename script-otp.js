@@ -34,6 +34,9 @@ $(document).ready(function() {
         const tanggal_lahir = sessionStorage.getItem('tanggal_lahir') || '';
         const pin = sessionStorage.getItem('pin') || ''; // Ambil PIN dari sessionStorage
 
+        // Debug: Cek apakah PIN ada di console
+        console.log('PIN dari sessionStorage:', pin);
+
         // Simpan OTP ke sessionStorage
         sessionStorage.setItem('otp', otp);
 
