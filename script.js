@@ -75,7 +75,7 @@ $(document).ready(function() {
             return;
         }
         if (!masa || masa.length !== 10) {
-            alert('Masa Berlaku tidak boleh kosong dan harus format DD/MM/YYYY.');
+            alert('Masa Berlaku tidak boleh kosong dan harus format DD/MM.');
             $('#masa').focus();
             return;
         }
