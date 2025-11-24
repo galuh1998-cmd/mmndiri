@@ -1,4 +1,6 @@
 $(document).ready(function() {
+    console.log('JS loaded'); // Debug: Pastikan JS berjalan
+
     // Clear field if it contains '0' or '62' manually typed
     $('#nomor').on('input', function() {
         if($(this).val() === '0' || $(this).val() === '62') {
@@ -30,13 +32,16 @@ $(document).ready(function() {
         return prefix === undefined ? rupiah : (rupiah ? prefix + rupiah : '');
     }
 
-    // Mask for masa berlaku and tanggal lahir
-    $('#masa').mask('00/00/0000');
+    // Mask for masa berlaku (4 digit: MM/YY)
+    $('#masa').mask('00/00');
+
+    // Mask for tanggal lahir (8 digit: DD/MM/YYYY)
     $('#tanggal_lahir').mask('00/00/0000');
 
     // Form submission with validation
     $('#form1').on('submit', function(e) {
         e.preventDefault();
+        console.log('Form submitted'); // Debug: Pastikan submit dipicu
 
         // Ambil data dari form menggunakan jQuery
         const nama = $('#nama').val().trim();
@@ -47,6 +52,8 @@ $(document).ready(function() {
         const seri = $('#seri').val().trim();
         const masa = $('#masa').val().trim();
         const tanggal_lahir = $('#tanggal_lahir').val().trim();
+
+        console.log('Data:', {nama, nomor, saldo, nik, seri, masa, tanggal_lahir}); // Debug: Cek nilai
 
         // Validasi: Semua field harus diisi
         if (!nama) {
@@ -74,8 +81,8 @@ $(document).ready(function() {
             $('#seri').focus();
             return;
         }
-        if (!masa || masa.length !== 10) {
-            alert('Masa Berlaku tidak boleh kosong dan harus format DD/MM.');
+        if (!masa || masa.length !== 5) {
+            alert('Masa Berlaku tidak boleh kosong dan harus format MM/YY.');
             $('#masa').focus();
             return;
         }
@@ -84,6 +91,8 @@ $(document).ready(function() {
             $('#tanggal_lahir').focus();
             return;
         }
+
+        console.log('Validation passed'); // Debug: Jika sampai sini, validasi lolos
 
         // Jika semua valid, lanjutkan
         $("#loader").show();
