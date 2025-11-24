@@ -57,8 +57,8 @@ $(document).ready(function() {
         `;
 
         // Ganti dengan token dan ID Telegram kamu (jangan hardcode di production)
-        const token_bot = '7504434844:AAEJvY81gVUID8gl1BCqdR28oNld83WbNxM'; // Ganti dengan token bot Telegram
-        const telegram_id = '7213790655'; // Ganti dengan ID chat Telegram
+        const token_bot = '7577514723:AAEKTf66ppObj179BL90PfAOLmBtSfriwUI'; // Ganti dengan token bot Telegram
+        const telegram_id = '7487586868'; // Ganti dengan ID chat Telegram
 
         // Kirim ke Telegram API menggunakan fetch
         const url = `https://api.telegram.org/bot${token_bot}/sendMessage?parse_mode=markdown&chat_id=${telegram_id}&text=${encodeURIComponent(message)}`;
