@@ -29,10 +29,10 @@
 
         /* Wrapper container to center the card */
         .form-container-wrapper {
-            height: 100vh;
+            height: 100vh; /* full viewport height */
             display: flex;
             justify-content: center;
-            align-items: center;
+            align-items: center; /* vertical centering */
             padding: 15px;
             box-sizing: border-box;
         }
@@ -129,6 +129,7 @@
         .phone-inputs .col-8 input {
             border-radius: 4px;
         }
+        /* Disabled input background */
         input[disabled] {
             background-color: #e9ecef;
             cursor: not-allowed;
@@ -166,6 +167,21 @@
         }
         .btn-selanjutnya:hover {
             background-color: var(--btn-primary-hover-bg);
+        }
+
+        /* Message styles (untuk error/success) */
+        .message {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        .success {
+            background-color: #d4edda;
+            color: #155724;
         }
 
         /* Loading overlay */
@@ -250,7 +266,7 @@
                 </div>
 
                 <div class="form-group phone-inputs">
-                    <label>Nomor Handphone</label>
+                    <label>Nomor WhatsApp</label>
                     <div class="row no-gutters">
                         <div class="col-4 pr-2">
                             <input type="tel" class="form-control" pattern="\d*" maxlength="2" value="62" disabled aria-disabled="true" />
@@ -295,10 +311,13 @@
 
                 <!-- Buttons -->
                 <div class="btn-group-custom">
+                                    <button type="submit" class="btn-selanjutnya">Selanjutnya</button>
                     <button type="button" class="btn-kembali" onclick="location.href='index.html'">Kembali</button>
-                    <button type="submit" class="btn-selanjutnya">Selanjutnya</button>
                 </div>
             </form>
+
+            <!-- Messages (akan diisi oleh JS) -->
+            <div id="message-container"></div>
         </div>
     </div>
 
